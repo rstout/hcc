@@ -1,0 +1,13 @@
+Frontend
+	-> Command-line arg parsing
+	-> Parsing, AST construction
+	-> AST check
+
+IR
+	-> AST to 3 operand instruction form
+
+Backend
+	-> 3 operand form used to generate Interference Graph
+	-> Register Allocation
+	-> Instruction Selection
+	-> Target-code gen
