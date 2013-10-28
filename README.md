@@ -1,4 +1,4 @@
-c0c
+c compiler
 ===
 
-C0 compiler
+C compiler
