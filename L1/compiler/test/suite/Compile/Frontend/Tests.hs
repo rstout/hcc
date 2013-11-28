@@ -4,6 +4,6 @@ import Test.HUnit
 import qualified Compile.Frontend.Parse.Tests
 
 tests :: Test
-tests = TestLabel "Frontend tests" $ TestList
+tests = TestLabel "Frontend" $ TestList
         [ Compile.Frontend.Parse.Tests.tests
         ]

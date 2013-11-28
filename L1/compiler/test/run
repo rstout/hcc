@@ -2,5 +2,8 @@
 
 cabal configure
 cabal build
-echo "\n"
-dist/build/c0c-testsuite/c0c-testsuite
+if [ $? -eq 0 ]; then
+    echo ""
+    dist/build/c0c-testsuite/c0c-testsuite
+    echo ""
+fi

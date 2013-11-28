@@ -20,24 +20,27 @@ getDefaults "l1c" = defaultJob {jobOutFormat = Asm}
 getDefaults _ = defaultJob
 
 main :: IO ()
-main = do 
+main = do
   sourceCode <- getSourceCode
+  case parseAST sourceCode of
+    Left msg -> putStrLn msg
+    _ -> putStrLn "Parse Success"
   let targetCode = compile sourceCode
   return ()
-  
+
 getSourceCode :: IO SourceCode
-getSourceCode = do  
+getSourceCode = do
   args <- getArgs
-  if length args <= 0 then do exitFailure else return () 
+  if length args <= 0 then do exitFailure else return ()
   let file = head args
   code <- BS.readFile file
   let source = SourceCode file code
   return source
-  
+
 writeTargetCode :: FilePath -> TargetCode -> IO ()
 writeTargetCode = undefined
 
-{-  
+{-
   prog <- getEnv "COMPILER"
   args <- getArgs
   case parseArgs (getDefaults prog) args of

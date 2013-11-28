@@ -32,11 +32,13 @@ astParser = do
   reserved "int"
   reserved "main"
   parens $ return ()
-  braces (do
-   pos   <- getPosition
-   stmts <- many stmt
-   return $ Block stmts pos)
-   <?> "block"
+  block <- braces
+           (do pos   <- getPosition
+               stmts <- many1 stmt
+               return $ Block stmts pos)
+  eof
+  return block
+  <?> "block"
 
 stmt :: C0Parser Stmt
 stmt = decl <|> asgn <|> ret <?> "statement"
