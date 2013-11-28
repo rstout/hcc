@@ -24,7 +24,7 @@ class Check a where
     check :: a -> State CheckState ()
 
 instance Check AST where
-    check ast@(Block stmts _) = do mapM check stmts; checkReturnExists
+    check (Block stmts _) = do mapM check stmts; checkReturnExists
 
 instance Check Stmt where
     check (Decl ident e pos) =
@@ -83,15 +83,12 @@ addUninitDecl :: String -> State CheckState ()
 addUninitDecl decl = do
   modify $ \cs -> cs { declMap = Map.insert decl False (declMap cs) }
 
-multiDeclErrMsg :: String -> SourcePos -> String
-multiDeclErrMsg ident pos = "Mutliple declarations of " ++ ident ++
-                            " at:" ++ show pos
-
 checkMultiDecl :: String -> SourcePos -> State CheckState ()
 checkMultiDecl ident pos =
     do { cs <- get
        ; case Map.lookup ident $ declMap cs of
-           Just _ -> do addError $ multiDeclErrMsg ident pos
+           Just _ -> do addError $ "Mutliple declarations of \"" ++ ident ++
+                                    "\" at: " ++ show pos
            Nothing -> return ()
        }
 
@@ -103,10 +100,22 @@ checkReturnExists = do { cs <- get
                        }
 
 checkIsDecled :: String -> SourcePos -> State CheckState ()
-checkIsDecled ident pos = undefined
+checkIsDecled ident pos =
+    do { cs <- get
+       ; case Map.lookup ident (declMap cs) of
+           Just _ -> return ()
+           Nothing -> addError $ "Variable \"" ++ ident ++
+                      "\" used before being declared at: " ++ show pos
+       }
 
 checkIsInited :: String -> SourcePos -> State CheckState ()
-checkIsInited ident pos = undefined
+checkIsInited ident pos =
+    do { cs <- get
+       ; case Map.lookup ident (declMap cs) of
+           Just True -> return ()
+           _ -> addError $ "Variable \"" ++ ident ++
+                "\" used before being initialized at: " ++ show pos
+       }
 
 int32Max :: Integer
 int32Max = 2 ^ 31

@@ -1,0 +1,6 @@
+#! /bin/sh
+
+cabal configure
+cabal build
+echo "\n"
+dist/build/c0c-testsuite/c0c-testsuite
