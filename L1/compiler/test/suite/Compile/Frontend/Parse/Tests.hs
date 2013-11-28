@@ -1,19 +1,19 @@
-module Compile.Frontend.ParseTests (tests) where
+module Compile.Frontend.Parse.Tests (tests) where
 
-import Test.HUnit.Base hiding  (path)
+import Test.HUnit
 import Compile.Frontend.Parse
 import Compile.Types
 import Data.ByteString.Char8 (pack)
 
 tests :: Test
-tests = TestLabel "Parse tests" $ TestList
+tests = TestLabel "Parser tests" $ TestList
         [ testSimpleProgramParsesWithSuccess
         ]
 
 assertParseSuccess :: String -> Assertion
 assertParseSuccess prgm =
     case parseAST (SourceCode "" (pack prgm)) of
-      Left msg -> assertFailure msg
+      Left msg -> assertFailure msg -- "Expected parse success but got: ..."
       Right _ -> return ()
 
 testSimpleProgramParsesWithSuccess :: Test

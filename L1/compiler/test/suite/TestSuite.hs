@@ -1,7 +1,7 @@
 module Main where
 
 import Test.HUnit
-import Compile.Frontend.Tests
+import Compile.Tests
 
 main :: IO ()
-main = do c <- runTestTT tests; return ()
+main = do runTestTT tests; return ()
