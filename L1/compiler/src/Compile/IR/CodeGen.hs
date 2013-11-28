@@ -9,6 +9,7 @@ module Compile.IR.CodeGen where
 import Compile.Types
 import qualified Data.Map as Map
 
+{-
 type Alloc = (Map.Map String Int, Int)
 
 codeGen :: AST -> [AAsm]
@@ -37,3 +38,4 @@ genExp (a,n) (ExpUnOp op e _) l = let
   i1 = genExp (a, n + 1) e (ATemp n)
   c  = [AAsm [l] op [ALoc $ ATemp n]]
   in i1 ++ c
+-}

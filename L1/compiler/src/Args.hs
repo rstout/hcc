@@ -8,7 +8,7 @@ module Args (parseArgs, JobParseError(..), usage) where
 
 import Compile.Types.Job
 import System.Console.GetOpt
-import Util
+import Data.Tuple
 import Data.Maybe
 import System.FilePath
 

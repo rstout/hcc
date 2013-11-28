@@ -14,14 +14,21 @@ module Compile
 import System.FilePath
 import System.Process
 import System.Exit
+import Data.Functor
 
 import Control.Monad.Error
 
 import Compile.Types
 import Compile.Frontend
 import Compile.IR
+import Compile.Backend
 
 import LiftIOE
+
+compile :: SourceCode -> Either String TargetCode
+compile s = (genTargetCode . genIR) <$> (genAST s)
+
+{-
 
 writer file obj = liftIOE $ writeFile file $ show obj
 
@@ -54,3 +61,4 @@ gcc args input output = exitErrorCode $ readProcessWithExitCode
           case exitCode of
             ExitSuccess   -> return ()
             ExitFailure n -> throwError $ "Error " ++ (show n) ++ "\n" ++ msg
+-}

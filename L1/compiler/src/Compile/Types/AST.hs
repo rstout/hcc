@@ -4,20 +4,21 @@
 
    Defines the AST we parse to
 -}
+
 module Compile.Types.AST where
 
 import Text.ParserCombinators.Parsec.Pos (SourcePos)
-
 import Compile.Types.Ops
 
-data AST = Block [Decl] [Stmt] SourcePos
-data Decl = Decl {declName :: String, declPos :: SourcePos}
-data Stmt = Asgn String AsgnOp Expr SourcePos 
+--data Decl = Decl {declName :: String, declPos :: SourcePos}
+data AST = Block [Stmt] SourcePos
+data Stmt = Decl String (Maybe Expr) SourcePos
+          | Asgn String AsgnOp Expr SourcePos
           | Return Expr SourcePos
-data Expr = ExpInt Integer SourcePos
+data Expr = ExprInt Integer SourcePos
           | Ident String SourcePos
-          | ExpBinOp Op Expr Expr SourcePos
-          | ExpUnOp Op Expr SourcePos
+          | ExprBinOp Op Expr Expr SourcePos
+          | ExprUnOp Op Expr SourcePos
 type AsgnOp = Maybe Op
 
 
@@ -27,6 +28,7 @@ type AsgnOp = Maybe Op
 -- Once that is written, you may find it helpful for debugging to switch
 -- back to the deriving Show instances.
 
+{-
 instance Show AST where
   show (Block decls stmts _) =
     "int main () {\n" ++ (unlines $ (map show decls)
@@ -48,3 +50,4 @@ instance Show Expr where
 
 mShow Nothing = ""
 mShow (Just x) = show x
+-}

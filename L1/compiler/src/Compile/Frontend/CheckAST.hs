@@ -1,72 +1,112 @@
 {- L1 Compiler
-   Author: Matthew Maurer <mmaurer@andrew.cmu.edu>
-   Modified by: Ryan Pearl <rpearl@andrew.cmu.edu>
+   Author: Ryan Stout rstout610@yahoo.com
 
    Beginnings of a typechecker
 -}
-module Compile.Frontend.CheckAST where
+
+module Compile.Frontend.CheckAST (checkAST) where
 
 import Control.Monad.State
-import Control.Monad.Error
 import Control.Monad
-
-import qualified Data.Set as Set
+import Data.Functor
+import Text.ParserCombinators.Parsec.Pos (SourcePos)
+import qualified Data.Map as Map
+import Data.List
 
 import Compile.Types
 
--- Note to the student
--- When your checker gets larger, you may wish to formalize the state
--- a little more.
+checkAST :: AST -> Either String AST
+checkAST ast = case errors $ execState (check ast) newCheckState of
+                 [] -> Right ast
+                 xs -> Left $ intercalate "\n" xs
 
--- This is hacky and not designed to scale.
+class Check a where
+    check :: a -> State CheckState ()
 
-runErrorState :: ErrorT String (State s) a -> s -> Either String a
-runErrorState m s = evalState (runErrorT m) s
+instance Check AST where
+    check ast@(Block stmts _) = do mapM check stmts; checkReturnExists
 
-assertMsg :: (Monad m) => String -> Bool -> ErrorT String m ()
-assertMsg s True  = return ()
-assertMsg s False = throwError s
+instance Check Stmt where
+    check (Decl ident e pos) =
+        do { checkMultiDecl ident pos
+           ; case e of Just expr -> do check expr; addInitDecl ident
+                       Nothing   -> do addUninitDecl ident
+           }
 
-assertMsgE :: String -> Bool -> Either String ()
-assertMsgE s True  = Right ()
-assertMsgE s False = Left s
+    check (Asgn ident op e pos) =
+        do { check e
+           ; checkIsDecled ident pos
+           ; case op of
+               Just _ -> checkIsInited ident pos
+               Nothing -> return ()
+           }
 
-checkAST :: AST -> Either String ()
-checkAST ast@(Block decls stmts _) = do
-  let variables = Set.fromList $ map declName decls
-  assertMsgE (findDuplicate decls)
-             $ (length decls) == (Set.size variables)
-  rets <- fmap or $ runErrorState (mapM checkStmt stmts) $
-                                  (variables, Set.empty)
-  assertMsgE "main does not return" rets
+    check (Return e _) = do check e; foundReturn
 
-checkStmt (Return e _) = do
-  checkExpr e
-  return True
-checkStmt (Asgn i m e p) = do
-  (vars, defined) <- get
-  assertMsg (i ++ " not declared at " ++ (show p)) (Set.member i vars)
-  case m of
-    Just _  -> assertMsg (i ++ " used undefined at " ++ (show p))
-                         (Set.member i defined)
-    Nothing -> return ()
-  checkExpr e
-  put (vars, Set.insert i defined)
-  return False
+instance Check Expr where
+    check (ExprInt i pos) =
+        do { if i > int32Max
+             then addError $ "Integer to large at: " ++ show pos
+             else return ()
+           }
 
-checkExpr (ExpInt n p) =
-  assertMsg ((show n) ++ " too large at " ++ (show p))
-            (n < 2^32)
-checkExpr (Ident s p) = do
-  (vars, defined) <- get
-  assertMsg (s ++ " used undeclared at " ++ (show p)) (Set.member s vars)
-  assertMsg (s ++ " used undefined at " ++ (show p)) (Set.member s defined)
-checkExpr (ExpBinOp _ e1 e2 _) = mapM_ checkExpr [e1, e2]
-checkExpr (ExpUnOp _ e _) = checkExpr e
+    check (Ident _ _) = do return ()
+    check (ExprBinOp op e1 e2 _) = do check e1; check e2
+    check (ExprUnOp op e _) = do check e
 
-findDuplicate xs = findDuplicate' xs Set.empty
-  where findDuplicate' [] _ = error "no duplicate"
-        findDuplicate' (Decl x pos : xs) s =
-          if Set.member x s
-            then x ++ " re-declared at " ++ (show pos)
-            else findDuplicate' xs (Set.insert x s)
+
+-- Defines the state of the AST checker
+data CheckState = CheckState { declMap :: Map.Map String Bool
+                             , errors :: [String]
+                             , returnExists :: Bool
+                             }
+
+newCheckState :: CheckState
+newCheckState = CheckState { declMap = Map.empty
+                           , errors = []
+                           , returnExists = False
+                           }
+
+addError :: String -> State CheckState ()
+addError msg = do modify $ \cs -> cs { errors = msg : (errors cs) }
+
+foundReturn :: State CheckState ()
+foundReturn = do modify $ \cs -> cs { returnExists = True }
+
+-- Add an initialized declaration to the CheckState
+addInitDecl :: String -> State CheckState ()
+addInitDecl decl = do
+  modify $ \cs -> cs { declMap = Map.insert decl True (declMap cs) }
+
+-- Add an uninitialized declaration to the CheckState
+addUninitDecl :: String -> State CheckState ()
+addUninitDecl decl = do
+  modify $ \cs -> cs { declMap = Map.insert decl False (declMap cs) }
+
+multiDeclErrMsg :: String -> SourcePos -> String
+multiDeclErrMsg ident pos = "Mutliple declarations of " ++ ident ++
+                            " at:" ++ show pos
+
+checkMultiDecl :: String -> SourcePos -> State CheckState ()
+checkMultiDecl ident pos =
+    do { cs <- get
+       ; case Map.lookup ident $ declMap cs of
+           Just _ -> do addError $ multiDeclErrMsg ident pos
+           Nothing -> return ()
+       }
+
+checkReturnExists :: State CheckState ()
+checkReturnExists = do { cs <- get
+                       ; if (not $ returnExists cs)
+                         then addError "Return statment is missing"
+                         else return ()
+                       }
+
+checkIsDecled :: String -> SourcePos -> State CheckState ()
+checkIsDecled ident pos = undefined
+
+checkIsInited :: String -> SourcePos -> State CheckState ()
+checkIsInited ident pos = undefined
+
+int32Max :: Integer
+int32Max = 2 ^ 31

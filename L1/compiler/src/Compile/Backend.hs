@@ -5,3 +5,8 @@
 -}
 
 module Compile.Backend where
+
+import Compile.Types
+
+genTargetCode :: IR -> TargetCode
+genTargetCode = undefined
