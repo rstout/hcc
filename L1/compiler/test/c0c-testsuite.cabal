@@ -6,6 +6,7 @@ cabal-version:  >= 1.8
 Executable c0c-testsuite
   main-is:         TestSuite.hs
   hs-source-dirs:  ../src suite
-  Build-Depends:   base, HUnit, bytestring, syb, mtl, test-framework
+  Build-Depends:   base, HUnit, bytestring, syb, mtl, test-framework,
+                   containers
   Extensions:      DeriveDataTypeable, RankNTypes, FlexibleInstances,
                    FlexibleContexts, MultiParamTypeClasses

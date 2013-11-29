@@ -50,7 +50,7 @@ instance Check Expr where
              else return ()
            }
 
-    check (Ident _ _) = do return ()
+    check (Ident ident pos) = do checkIsInited ident pos
     check (ExprBinOp op e1 e2 _) = do check e1; check e2
     check (ExprUnOp op e _) = do check e
 
