@@ -23,4 +23,4 @@ instance Show Op where
   show Mod = "%"
   show Nop = "[nop]"
 
-data COp = Ret deriving Show
+--data COp = Ret deriving Show

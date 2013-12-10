@@ -6,6 +6,7 @@
 -}
 module Compile.Types.AbstractAssembly where
 
+{-
 import Compile.Types.Ops
 
 data AAsm = AAsm {aAssign :: [ALoc]
@@ -20,3 +21,4 @@ data AVal = ALoc ALoc
 
 data ALoc = AReg Int
           | ATemp Int deriving Show
+-}

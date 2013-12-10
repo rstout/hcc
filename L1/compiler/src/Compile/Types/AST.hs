@@ -1,6 +1,5 @@
 {- L1 Compiler
-   Author: Matthew Maurer <mmaurer@andrew.cmu.edu>
-   Modified by: Ryan Pearl <rpearl@andrew.cmu.edu>
+   Author: Ryan Stout
 
    Defines the AST we parse to
 -}
@@ -17,8 +16,8 @@ data Stmt = Decl String (Maybe Expr) SourcePos
           | Return Expr SourcePos
 data Expr = ExprInt Integer SourcePos
           | Ident String SourcePos
-          | ExprBinOp Op Expr Expr SourcePos
           | ExprUnOp Op Expr SourcePos
+          | ExprBinOp Op Expr Expr SourcePos
 type AsgnOp = Maybe Op
 
 
