@@ -10,5 +10,5 @@ import Compile.Types
 import Compile.IR.CodeGen
 import Compile.IR.AAsm3Op
 
-genIR :: AST -> IR
-genIR = undefined
+genIR :: AST -> [AAsm3Op]
+genIR = genAAsm3Op

@@ -65,9 +65,6 @@ exprToAAsm3Op (ExprBinOp op e1 e2 _) =
        ; return (aasm, destTemp)
        }
 
-toInt32 :: Integer -> Int32
-toInt32 = fromIntegral
-
 data TempState = TempState { tempMap :: Map.Map String Temp
                            , nextTemp :: Temp
                            }
@@ -93,48 +90,5 @@ getTemp ident = do { temps <- gets tempMap
                    ; return $ temps Map.! ident
                    }
 
-{-
-genAAsm3Op :: AST -> [AAsm3Op]
-genAAsm3Op ast = evalState (toAAsm3Op [] ast) newTempState
-
-class ToAAsm3Op a where
-    toAAsm3Op :: [AAsm3Op] -> a -> State TempState [AAsm3Op]
-
-instance ToAAsm3Op AST where
-    toAAsm3Op aasm (Block stmts _) = do foldM toAAsm3Op aasm stmts
-
--- TODO: maybe make aasm part of the State, instead of explicitly passing it?
-instance ToAAsm3Op Stmt where
-    toAAsm3Op aasm (Decl ident mExpr _) =
-        do { assignTemp ident
-           ; maybe (return aasm) (toAAsm3Op aasm) mExpr
-           --TODO: assign ident's temp to the last assigned temp in the
-           --above result
-           }
-
-    toAAsm3Op aasm (Asgn ident asgnOp expr _) = undefined
-
-    toAAsm3Op aasm (Return expr _) = undefined
-
-instance ToAAsm3Op Expr where
-    toAAsm3Op = undefined
-
-data TempState = TempState { tempMap :: Map.Map String Temp
-                           , nextTemp :: Temp
-                           }
-
-newTempState = TempState { tempMap = Map.empty, nextTemp = 0 }
-
--- Returns the Temp associated with the given identifier. If there is no
--- associated Temp, one is assigned
-assignTemp :: String -> State TempState Temp
-assignTemp ident = do { temp <- gets $ \ts -> 1 + (nextTemp ts)
-                      ; modify $ \ts -> ts { tempMap = Map.insert ident temp (tempMap ts)
-                                           , nextTemp = temp
-                                           }
-                      ; return temp
-                      }
-
-getTemp :: String -> State TempState Temp
-getTemp ident = undefined
--}
+toInt32 :: Integer -> Int32
+toInt32 = fromIntegral

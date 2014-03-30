@@ -1,0 +1,37 @@
+Name:                hcc
+Version:             0.0
+Description:         C compiler written in haskell
+Author:              Ryan Stout
+Maintainer:          rstout610@gmail.com
+Category:			 Development
+Build-Type:          Simple
+Cabal-Version:       >=1.2
+
+Executable hcc
+    hs-source-dirs: src
+    main-is: hcc.hs
+
+    build-depends:
+        base,
+        mtl,
+        syb,
+        process,
+        filepath,
+        bytestring,
+        containers,
+        parsec
+
+    extensions:
+        DeriveDataTypeable,
+        RankNTypes,
+        FlexibleInstances,
+        FlexibleContexts,
+        MultiParamTypeClasses
+
+Test-suite testsuite
+    hs-source-dirs: src test
+    type: exitcode-stdio-1.0
+    main-is: TestSuite.hs
+
+    build-depends:
+        test-framework

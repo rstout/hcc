@@ -25,8 +25,8 @@ import Compile.Backend
 
 import LiftIOE
 
-compile :: SourceCode -> Either String TargetCode
-compile s = (genTargetCode . genIR) <$> (genAST s)
+compile :: SourceCode -> Either String [AAsm3Op]
+compile s = genIR <$> (genAST s)
 
 {-
 

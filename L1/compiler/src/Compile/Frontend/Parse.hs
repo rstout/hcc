@@ -121,7 +121,7 @@ c0Def :: GenLanguageDef ByteString () Identity
 c0Def = LanguageDef
    {commentStart    = "/*",
     commentEnd      = "*/",
-    commentLine     = string "#" <|> string "//",
+    commentLine     = "//", -- string "#" <|> string "//",
     nestedComments  = True,
     identStart      = letter <|> char '_',
     identLetter     = alphaNum <|> char '_',

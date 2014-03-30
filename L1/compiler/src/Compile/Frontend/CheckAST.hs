@@ -39,6 +39,7 @@ instance Check Stmt where
            ; case op of
                Just _ -> checkIsInited ident pos
                Nothing -> return ()
+           ; addInitDecl ident
            }
 
     check (Return e _) = do check e; foundReturn

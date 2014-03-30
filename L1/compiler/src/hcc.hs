@@ -4,29 +4,32 @@
    The entry point to the compiler
 -}
 
-import Compile
 import Args
 import System.Environment
 import System.IO
 import System.Exit
 import qualified Data.ByteString as BS
 import Data.ByteString.Char8 (pack)
+import Control.Monad
+
+import Compile
 import Compile.Frontend.Parse
 import Compile.Types
 import Compile
 
-getDefaults "c0c" = defaultJob
-getDefaults "l1c" = defaultJob {jobOutFormat = Asm}
-getDefaults _ = defaultJob
+--getDefaults "c0c" = defaultJob
+--getDefaults "l1c" = defaultJob {jobOutFormat = Asm}
+--getDefaults _ = defaultJob
 
 main :: IO ()
 main = do
   sourceCode <- getSourceCode
   case parseAST sourceCode of
     Left msg -> putStrLn msg
-    _ -> putStrLn "Parse Success"
-  let targetCode = compile sourceCode
-  return ()
+    _ -> return ()
+  case compile sourceCode of
+    Left errmsg -> putStrLn errmsg
+    Right aasm  -> mapM_ (putStr . (++ "\n") . show) aasm
 
 getSourceCode :: IO SourceCode
 getSourceCode = do
