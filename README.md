@@ -1,4 +1,4 @@
-c compiler
+A compiler for a C-like language
 ===
 
-C compiler
+
