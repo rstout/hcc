@@ -1,16 +1,16 @@
-{-| Frontend.hs 
-    Author: Ryan Stout 
+{-| Frontend.hs
+    Author: Ryan Stout
 
     File parsing, AST construction, AST validation, Type checking, etc.
--} 
+-}
 
-module Compile.Frontend where
-
-import Compile.Frontend.CheckAST
-import Compile.Frontend.Parse
-import Compile.Types
+module Hcc.Compile.Frontend where
 
 import Data.Functor
-  
+
+import Hcc.Compile.Frontend.CheckAST
+import Hcc.Compile.Frontend.Parse
+import Hcc.Compile.Types
+
 genAST :: SourceCode -> Either String AST
 genAST source = checkAST =<< parseAST source

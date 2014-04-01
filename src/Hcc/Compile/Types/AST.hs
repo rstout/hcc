@@ -4,10 +4,10 @@
    Defines the AST we parse to
 -}
 
-module Compile.Types.AST where
+module Hcc.Compile.Types.AST where
 
 import Text.ParserCombinators.Parsec.Pos (SourcePos)
-import Compile.Types.Ops
+import Hcc.Compile.Types.Ops
 
 --data Decl = Decl {declName :: String, declPos :: SourcePos}
 data AST = Block [Stmt] SourcePos

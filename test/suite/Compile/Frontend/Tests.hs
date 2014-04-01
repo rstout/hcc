@@ -1,4 +1,4 @@
-module Compile.Frontend.Tests (tests) where
+module Hcc.Compile.Frontend.Tests (tests) where
 
 import Test.HUnit
 import qualified Compile.Frontend.Parse.Tests

@@ -1,8 +1,6 @@
-{- L1 Compiler
-   Author: Matthew Maurer <mmaurer@andrew.cmu.edu>
-   Modified by: Ryan Pearl <rpearl@andrew.cmu.edu>
--}
-module Compile.Types
+-- | Types.hs
+
+module Hcc.Compile.Types
        ( module X
        , SourceCode(..)
        , TargetCode
@@ -10,11 +8,11 @@ module Compile.Types
        , IR(..)
        ) where
 
-import Compile.Types.Job as X
-import Compile.Types.AbstractAssembly as X
-import Compile.Types.Ops as X
-import Compile.Types.AST as X
-import Compile.Types.AAsm as X
+import Hcc.Compile.Types.Job as X
+import Hcc.Compile.Types.AbstractAssembly as X
+import Hcc.Compile.Types.Ops as X
+import Hcc.Compile.Types.AST as X
+import Hcc.Compile.Types.IR as X
 
 import Data.ByteString (ByteString)
 

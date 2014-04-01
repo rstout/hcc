@@ -4,7 +4,7 @@
    Beginnings of a typechecker
 -}
 
-module Compile.Frontend.CheckAST (checkAST) where
+module Hcc.Compile.Frontend.CheckAST (checkAST) where
 
 import Control.Monad.State
 import Control.Monad
@@ -13,7 +13,7 @@ import Text.ParserCombinators.Parsec.Pos (SourcePos)
 import qualified Data.Map as Map
 import Data.List
 
-import Compile.Types
+import Hcc.Compile.Types
 
 checkAST :: AST -> Either String AST
 checkAST ast = case errors $ execState (check ast) newCheckState of

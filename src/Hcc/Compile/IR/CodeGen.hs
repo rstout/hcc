@@ -1,12 +1,10 @@
 {- L1 Compiler
-   Author: Matthew Maurer <mmaurer@andrew.cmu.edu>
-   Modified by: Ryan Pearl <rpearl@andrew.cmu.edu>
 
    Currently just a pseudolanguage with 3-operand instructions and arbitrarily many temps.
 -}
-module Compile.IR.CodeGen where
+module Hcc.Compile.IR.CodeGen where
 
-import Compile.Types
+import Hcc.Compile.Types
 import qualified Data.Map as Map
 
 {-

@@ -4,9 +4,9 @@
     Register allocation, instruction selection, target-code generation
 -}
 
-module Compile.Backend where
+module Hcc.Compile.Backend where
 
-import Compile.Types
+import Hcc.Compile.Types
 
 genTargetCode :: IR -> TargetCode
 genTargetCode = undefined

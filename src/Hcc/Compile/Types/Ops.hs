@@ -4,7 +4,7 @@
 
    Abstract Assembly operations
 -}
-module Compile.Types.Ops where
+module Hcc.Compile.Types.Ops where
 
 data Op = Mul
         | Add

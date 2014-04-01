@@ -9,7 +9,7 @@ Cabal-Version:       >=1.2
 
 Executable hcc
     hs-source-dirs: src
-    main-is: hcc.hs
+    main-is: Hcc.hs
 
     build-depends:
         base,
@@ -34,4 +34,5 @@ Test-suite testsuite
     main-is: TestSuite.hs
 
     build-depends:
-        test-framework
+        test-framework,
+        HUnit

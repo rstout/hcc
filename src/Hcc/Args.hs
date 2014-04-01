@@ -4,9 +4,9 @@
 
    Argument and option parsing
 -}
-module Args (parseArgs, JobParseError(..), usage) where
+module Hcc.Args (parseArgs, JobParseError(..), usage) where
 
-import Compile.Types.Job
+import Hcc.Compile.Types.Job
 import System.Console.GetOpt
 import Data.Tuple
 import Data.Maybe

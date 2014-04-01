@@ -4,7 +4,8 @@
    The entry point to the compiler
 -}
 
-import Args
+module Main where
+
 import System.Environment
 import System.IO
 import System.Exit
@@ -12,10 +13,11 @@ import qualified Data.ByteString as BS
 import Data.ByteString.Char8 (pack)
 import Control.Monad
 
-import Compile
-import Compile.Frontend.Parse
-import Compile.Types
-import Compile
+import Hcc.Args
+import Hcc.Compile
+import Hcc.Compile.Frontend.Parse
+import Hcc.Compile.Types
+
 
 --getDefaults "c0c" = defaultJob
 --getDefaults "l1c" = defaultJob {jobOutFormat = Asm}

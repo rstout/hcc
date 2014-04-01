@@ -4,7 +4,8 @@
 
    Defines a compiler phase or job
 -}
-module Compile.Types.Job where
+
+module Hcc.Compile.Types.Job where
 
 data Job = Job
   { jobOut       :: FilePath

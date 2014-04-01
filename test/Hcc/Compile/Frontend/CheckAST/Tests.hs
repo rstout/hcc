@@ -1,6 +1,6 @@
 module Hcc.Compile.Frontend.CheckAST.Tests (tests) where
 
-import Test.HUnit
+import Test.HUnit (assertFailure, Assertion, Test(..))
 import Control.Monad
 import Data.ByteString.Char8 (pack)
 
@@ -9,9 +9,8 @@ import Hcc.Compile.Frontend.CheckAST
 import Hcc.Compile.Frontend.TestUtils
 import Hcc.Compile.Types
 
-tests :: Test
-tests = TestLabel "CheckAST" $ TestList
-        [ testMissingReturnChecksWithFailure
+tests :: [Test]
+tests = [ testMissingReturnChecksWithFailure
         , testReturnUndeclVarChecksWithFailure
         , testMulitDeclsChecksWithFailure
         , testUseBeforeDeclChecksWithFailure

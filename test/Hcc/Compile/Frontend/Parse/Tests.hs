@@ -1,6 +1,6 @@
 module Hcc.Compile.Frontend.Parse.Tests (tests) where
 
-import Test.HUnit
+import Test.HUnit (assertFailure, Assertion, Test(..))
 import Control.Monad
 import Data.ByteString.Char8 (pack)
 
@@ -8,9 +8,8 @@ import Hcc.Compile.Frontend.Parse
 import Hcc.Compile.Frontend.TestUtils
 import Hcc.Compile.Types
 
-tests :: Test
-tests = TestLabel "Parser" $ TestList
-        [ testSimpleProgramParsesWithSuccess
+tests :: [Test]
+tests = [ testSimpleProgramParsesWithSuccess
         , testValidDecimalsParseWithSuccess
         , testInvalidDecimalsParseWithFailure
         , testValidHexParsesWithSuccess

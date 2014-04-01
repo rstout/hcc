@@ -4,10 +4,10 @@
 
    Defines a flat abstract assembly.
 -}
-module Compile.Types.AbstractAssembly where
+module Hcc.Compile.Types.AbstractAssembly where
 
 {-
-import Compile.Types.Ops
+import Hcc.Compile.Types.Ops
 
 data AAsm = AAsm {aAssign :: [ALoc]
                  ,aOp     :: Op

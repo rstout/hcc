@@ -5,10 +5,10 @@
    The start of a parser
 -}
 
-module Compile.Frontend.Parse (parseAST) where
+module Hcc.Compile.Frontend.Parse (parseAST) where
 
 import Data.ByteString as BS
-import Compile.Types
+import Hcc.Compile.Types
 
 import Text.ParserCombinators.Parsec hiding (try)
 import Control.Monad.Identity                 -- For our custom Language Definition

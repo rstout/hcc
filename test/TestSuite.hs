@@ -1,16 +1,13 @@
 module Main where
 
-import Test.Framework (defaultMain, testGroup)
-
-main :: IO ()
-main = defaultMain tests
-    where
-      tests = []
-
-{-
-import Compile.Types
 import Test.HUnit
+import qualified Hcc.Compile.Tests
 
 main :: IO ()
-main = do putStrLn "Not yet Implemented"
--}
+main = do runTestTT $ TestList tests
+          return ()
+
+tests :: [Test]
+tests = concat
+        [ Hcc.Compile.Tests.tests
+        ]

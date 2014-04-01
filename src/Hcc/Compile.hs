@@ -1,14 +1,12 @@
 {- L1 Compiler
-   Author: Matthew Maurer <mmaurer@andrew.cmu.edu>
-   Modified by: Ryan Pearl <rpearl@andrew.cmu.edu>
 
    Main compiler module; takes a job and compiles it
 -}
-module Compile
+module Hcc.Compile
        ( compile
-       , Job(..)
-       , defaultJob
-       , OF(..)
+       --, Job(..)
+       --, defaultJob
+       --, OF(..)
        ) where
 
 import System.FilePath
@@ -18,14 +16,14 @@ import Data.Functor
 
 import Control.Monad.Error
 
-import Compile.Types
-import Compile.Frontend
-import Compile.IR
-import Compile.Backend
+import Hcc.Compile.Types
+import Hcc.Compile.Frontend
+import Hcc.Compile.IR
+import Hcc.Compile.Backend
 
-import LiftIOE
+--import LiftIOE
 
-compile :: SourceCode -> Either String [AAsm3Op]
+compile :: SourceCode -> Either String [SimpleStmt]
 compile s = genIR <$> (genAST s)
 
 {-
